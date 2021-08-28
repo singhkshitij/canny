@@ -21,5 +21,10 @@ curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh
 ```
 Start live reload server
 ```shell
-air
+make dev-server
+```
+
+4. Update swagger docs
+```shell
+make swagger
 ```
