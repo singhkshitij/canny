@@ -9,4 +9,5 @@ require (
 	github.com/swaggo/swag v1.7.1
 	go.uber.org/zap v1.19.0
 	golang.org/x/net v0.0.0-20210825183410-e898025ed96a // indirect
+	golang.org/x/tools v0.1.5 // indirect
 )

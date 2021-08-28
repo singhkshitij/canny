@@ -9,6 +9,12 @@ import (
 	"net/http"
 )
 
+// @Summary health check endpoint
+// @Produce json
+// @Success 200 {object} app.Response
+// @Failure 500 {object} app.Response
+// @Router /ping [get]
+// @tags health-check
 func ping(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": "pong"})
 }
