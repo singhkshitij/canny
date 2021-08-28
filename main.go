@@ -4,6 +4,7 @@ import (
 	"canny/pkg/log"
 	"canny/pkg/setting"
 	"canny/routers"
+	"canny/worker"
 	"fmt"
 	"net/http"
 )
@@ -12,6 +13,7 @@ import (
 func init() {
 	log.Setup()
 	setting.Setup()
+	worker.Setup()
 }
 
 // @title Canny documentation
