@@ -1,6 +1,7 @@
 package err
 
 const (
-	SUCCESS        = 200
-	ERROR          = 500
+	Success = 200
+	Error   = 500
+	NotFound = 404
 )

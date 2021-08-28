@@ -34,5 +34,6 @@ func InitRouter() (r *gin.Engine) {
 
 	apiV1 := r.Group("api/v1/")
 	apiV1.GET("currencies", v1.Currencies)
+	apiV1.GET("currencies/:currency", v1.CurrencyData)
 	return
 }

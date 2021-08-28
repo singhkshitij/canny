@@ -38,6 +38,28 @@ paths:
       summary: Get supported currencies
       tags:
       - currency
+  /api/v1/currencies/{currency}:
+    get:
+      parameters:
+      - description: Symbol
+        in: path
+        name: currency
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Get coin data
+      tags:
+      - currency
   /ping:
     get:
       produces:

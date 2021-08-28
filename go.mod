@@ -4,7 +4,9 @@ go 1.16
 
 require (
 	github.com/gin-gonic/gin v1.7.4
+	github.com/go-co-op/gocron v1.7.1 // indirect
 	github.com/go-resty/resty/v2 v2.6.0 // indirect
+	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
 	github.com/swaggo/gin-swagger v1.3.1
 	github.com/swaggo/swag v1.7.1

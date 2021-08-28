@@ -1,8 +1,9 @@
 package err
 
 var MsgFlags = map[int]string{
-	SUCCESS: "ok",
-	ERROR:   "fail",
+	Success:  "ok",
+	Error:    "fail",
+	NotFound: "not found",
 }
 
 // GetMsg get err information based on Code
@@ -12,5 +13,5 @@ func GetMsg(code int) string {
 		return msg
 	}
 
-	return MsgFlags[ERROR]
+	return MsgFlags[Error]
 }
