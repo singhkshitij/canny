@@ -14,6 +14,19 @@ func init() {
 	setting.Setup()
 }
 
+// @title Canny documentation
+// @version 1.0
+// @description This is a sample server Canny server.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name Kshitij
+// @contact.url https://github.com/singhkshitij
+// @contact.email singh_kshitij@yahoo.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @BasePath /
 func main() {
 	initRouter := routers.InitRouter()
 

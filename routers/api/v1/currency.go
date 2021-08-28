@@ -6,6 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Get supported currencies
+// @Produce  json
+// @Success 200 {object} app.Response
+// @Failure 500 {object} app.Response
+// @Router /api/v1/currencies [get]
+// @tags currency
 func Currencies(c *gin.Context) {
 	appG := app.Gin{C: c}
 	supportedCoins := []string{"BTC", "ETH", "MATIC"}
