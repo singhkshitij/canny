@@ -45,7 +45,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/app.Response"
+                            "$ref": "#/definitions/app.CurrenciesResponse"
                         }
                     },
                     "500": {
@@ -79,7 +79,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/app.Response"
+                            "$ref": "#/definitions/app.CurrencyDataResponse"
                         }
                     },
                     "500": {
@@ -118,6 +118,85 @@ var doc = `{
         }
     },
     "definitions": {
+        "alphavantage.DailyCurrencyDataResponse": {
+            "type": "object",
+            "properties": {
+                "Meta Data": {
+                    "$ref": "#/definitions/alphavantage.MetaData"
+                },
+                "Time Series (Digital Currency Daily)": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/alphavantage.PriceDataResponse"
+                    }
+                }
+            }
+        },
+        "alphavantage.MetaData": {
+            "type": "object",
+            "properties": {
+                "2. Digital Currency Code": {
+                    "type": "string"
+                },
+                "3. Digital Currency Name": {
+                    "type": "string"
+                },
+                "4. Market Code": {
+                    "type": "string"
+                },
+                "5. Market Name": {
+                    "type": "string"
+                },
+                "6. Last Refreshed": {
+                    "type": "string"
+                },
+                "7. Time Zone": {
+                    "type": "string"
+                }
+            }
+        },
+        "alphavantage.PriceDataResponse": {
+            "type": "object",
+            "properties": {
+                "2a. high (INR)": {
+                    "type": "string"
+                },
+                "2b. high (USD)": {
+                    "type": "string"
+                }
+            }
+        },
+        "app.CurrenciesResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "app.CurrencyDataResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/alphavantage.DailyCurrencyDataResponse"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
         "app.Response": {
             "type": "object",
             "properties": {

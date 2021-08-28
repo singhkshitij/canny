@@ -9,7 +9,7 @@ import (
 
 // @Summary Get supported currencies
 // @Produce  json
-// @Success 200 {object} app.Response
+// @Success 200 {object} app.CurrenciesResponse
 // @Failure 500 {object} app.Response
 // @Router /api/v1/currencies [get]
 // @tags currency
@@ -23,7 +23,7 @@ func Currencies(c *gin.Context) {
 // @Summary Get coin data
 // @Produce json
 // @Param currency path string true "Symbol"
-// @Success 200 {object} app.Response
+// @Success 200 {object} app.CurrencyDataResponse
 // @Failure 500 {object} app.Response
 // @Router /api/v1/currencies/{currency} [get]
 // @tags currency
@@ -32,7 +32,7 @@ func CurrencyData(c *gin.Context) {
 	coinName := c.Param("currency")
 	data := cache.Get(coinName)
 	if data == nil {
-		appG.Response(200, err.NotFound, map[string]string{})
+		appG.Response(404, err.NotFound, map[string]string{})
 	} else {
 		appG.Response(200, err.Success, data)
 	}

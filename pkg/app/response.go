@@ -1,6 +1,7 @@
 package app
 
 import (
+	"canny/pkg/alphavantage"
 	"canny/pkg/err"
 	"github.com/gin-gonic/gin"
 )
@@ -22,4 +23,16 @@ func (g *Gin) Response(httpCode, errCode int, data interface{}) {
 		Data: data,
 	})
 	return
+}
+
+type CurrenciesResponse struct {
+	Code int      `json:"code"`
+	Msg  string   `json:"msg"`
+	Data []string `json:"data"`
+}
+
+type CurrencyDataResponse struct {
+	Code int                                    `json:"code"`
+	Msg  string                                 `json:"msg"`
+	Data alphavantage.DailyCurrencyDataResponse `json:"data"`
 }

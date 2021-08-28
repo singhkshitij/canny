@@ -13,7 +13,7 @@ func Setup() {
 	client = cache.New(48*time.Hour, 24*time.Hour)
 }
 
-func Set(key string, value *alphavantage.DailyCurrencyDataResult){
+func Set(key string, value *alphavantage.DailyCurrencyDataResponse){
 	client.Set(key, value, cache.DefaultExpiration)
 }
 

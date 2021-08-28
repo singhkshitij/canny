@@ -20,7 +20,7 @@ func getEligibleExchangeCurrency() string {
 
 func getEligibleCoins() []string {
 	// TODO use configs to fetch this
-	return []string{"BTC", "ETH", "MATIC"}
+	return []string{"BTC", "ETH", "MATIC", "ADA"}
 }
 
 func RefreshCache() {
