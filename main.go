@@ -1,6 +1,7 @@
 package main
 
 import (
+	"canny/pkg/config"
 	"canny/pkg/log"
 	"canny/pkg/setting"
 	"canny/routers"
@@ -11,6 +12,7 @@ import (
 
 // init Initialise project configs
 func init() {
+	config.Setup()
 	log.Setup()
 	setting.Setup()
 	worker.Setup()

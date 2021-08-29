@@ -1,0 +1,11 @@
+alphavantage:
+  client:
+    url: "https://www.alphavantage.co/query"
+    fn: "DIGITAL_CURRENCY_DAILY"
+    apiKey: "KIKJ1AN4SPAXV1BO"
+app:
+  limit:
+    data:
+      currency: 365
+  release:
+    env: "prod"

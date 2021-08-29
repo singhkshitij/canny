@@ -1,6 +1,7 @@
 package alphavantage
 
 import (
+	"canny/pkg/config"
 	"canny/pkg/http"
 	"canny/pkg/log"
 	"encoding/json"
@@ -10,19 +11,19 @@ import (
 
 // TODO make this an async process so that all coin calls can be in parellel
 func GetCurrencyData(symbol string, market string, res chan *DailyCurrencyDataResponse) {
+	log.Logger.Debugf("Getting data for currency %s", symbol)
 
-	// TODO move api key to config
-	url := "https://www.alphavantage.co/query"
+	url := config.Cfg().String("alphavantage.client.url")
 	params := map[string]string{
-		"function": "DIGITAL_CURRENCY_DAILY",
+		"function": config.Cfg().String("alphavantage.client.fn"),
 		"symbol":   symbol,
 		"market":   market,
-		"apikey":   "KIKJ1AN4SPAXV1BO",
+		"apikey":   config.Cfg().String("alphavantage.client.apiKey"),
 	}
-
+	
 	resp, err := http.GetAsync(url, params)
 	if err != nil {
-		log.Logger.Errorf("Failed to get currency data, recieved response code %s", err.Error())
+		log.Logger.Errorf("Failed to get currency data for currency %s, recieved response code %s", symbol, err.Error())
 		return
 	}
 	data := handleResponse(resp)
@@ -53,8 +54,7 @@ func limitNumberOfEntriesAndTransformKeys(response *DailyCurrencyDataResponse) m
 	}
 	sort.Sort(sort.Reverse(sort.StringSlice(keys)))
 
-	//TODO this value has to come from config
-	limitedTimeSeriesDates := make([]string, 365)
+	limitedTimeSeriesDates := make([]string, config.Cfg().Int("app.limit.data.currency"))
 	copy(limitedTimeSeriesDates, keys)
 	limitedTimeSeriesData := make(map[string]*PriceDataResponse)
 

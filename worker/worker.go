@@ -27,6 +27,8 @@ func getEligibleCoins() []string {
 func RefreshCache() {
 	coins := getEligibleCoins()
 	exchange := getEligibleExchangeCurrency()
+
+	//FIXME : the order is still sequential, make it async
 	for _, coinName := range coins {
 		responseChannel := make(chan *alphavantage.DailyCurrencyDataResponse)
 		go alphavantage.GetCurrencyData(coinName, exchange, responseChannel)
