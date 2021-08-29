@@ -3,6 +3,7 @@ package worker
 import (
 	"canny/pkg/alphavantage"
 	"canny/pkg/cache"
+	"canny/pkg/config"
 	"canny/pkg/http"
 	"canny/pkg/log"
 	"canny/pkg/scheduler"
@@ -15,13 +16,11 @@ func Setup() {
 }
 
 func getEligibleExchangeCurrency() string {
-	// TODO get from configs
-	return "INR"
+	return config.Cfg().String("app.currencies.exchange")
 }
 
 func getEligibleCoins() []string {
-	// TODO use configs to fetch this
-	return []string{"BTC", "ETH", "MATIC", "ADA"}
+	return config.Cfg().Strings("app.currencies.allowed")
 }
 
 func RefreshCache() {

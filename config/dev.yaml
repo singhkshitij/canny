@@ -9,3 +9,15 @@ app:
       currency: 365
   release:
     env: "prod"
+  server:
+    port: 8090
+    readTimeout: 10
+    writeTimeout: 10
+  currencies:
+    allowed:
+      - "BTC"
+      - "MATIC"
+      - "ADA"
+      - "ETH"
+    exchange:
+      - "INR"

@@ -9,7 +9,6 @@ import (
 	"sort"
 )
 
-// TODO make this an async process so that all coin calls can be in parellel
 func GetCurrencyData(symbol string, market string, res chan *DailyCurrencyDataResponse) {
 	log.Logger.Debugf("Getting data for currency %s", symbol)
 
@@ -20,7 +19,7 @@ func GetCurrencyData(symbol string, market string, res chan *DailyCurrencyDataRe
 		"market":   market,
 		"apikey":   config.Cfg().String("alphavantage.client.apiKey"),
 	}
-	
+
 	resp, err := http.GetAsync(url, params)
 	if err != nil {
 		log.Logger.Errorf("Failed to get currency data for currency %s, recieved response code %s", symbol, err.Error())

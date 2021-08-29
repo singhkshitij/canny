@@ -3,6 +3,7 @@ package v1
 import (
 	"canny/pkg/app"
 	"canny/pkg/cache"
+	"canny/pkg/config"
 	"canny/pkg/err"
 	"github.com/gin-gonic/gin"
 )
@@ -15,8 +16,7 @@ import (
 // @tags currency
 func Currencies(c *gin.Context) {
 	appG := app.Gin{C: c}
-	// TODO use configs to fetch this
-	supportedCoins := []string{"BTC", "ETH", "MATIC"}
+	supportedCoins := config.Cfg().Strings("app.currencies.allowed")
 	appG.Response(200, err.Success, supportedCoins)
 }
 

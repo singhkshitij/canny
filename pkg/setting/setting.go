@@ -1,18 +1,23 @@
 package setting
 
-import "time"
+import (
+	"canny/pkg/config"
+	"time"
+)
 
 type Server struct {
-	Port        int
-	ReadTimeout time.Duration
+	Port         int
+	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 }
 
 var ServerSetting = &Server{}
 
-// Setup TODO: values should come from config library
 func Setup() {
-	ServerSetting.Port = 8090
-	ServerSetting.ReadTimeout = 10 * time.Second
-	ServerSetting.WriteTimeout = 10 * time.Second
+	readTimeout := config.Cfg().Int("app.server.readTimeout")
+	writeTimeout := config.Cfg().Int("app.server.writeTimeout")
+
+	ServerSetting.Port = config.Cfg().Int("app.server.port")
+	ServerSetting.ReadTimeout = time.Duration(readTimeout) * time.Second
+	ServerSetting.WriteTimeout = time.Duration(writeTimeout) * time.Second
 }
