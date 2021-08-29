@@ -7,6 +7,7 @@ import (
 	"canny/pkg/http"
 	"canny/pkg/log"
 	"canny/pkg/scheduler"
+	"sync"
 )
 
 func Setup() {
@@ -24,17 +25,24 @@ func getEligibleCoins() []string {
 }
 
 func RefreshCache() {
+
 	coins := getEligibleCoins()
 	exchange := getEligibleExchangeCurrency()
 
-	//FIXME : the order is still sequential, make it async
+	var wg sync.WaitGroup
+
 	for _, coinName := range coins {
-		responseChannel := make(chan *alphavantage.DailyCurrencyDataResponse)
-		go alphavantage.GetCurrencyData(coinName, exchange, responseChannel)
-		data := <-responseChannel
-		cache.Set(coinName, data)
-		log.Logger.Infof("Refreshed cache for coin %s", coinName)
+		wg.Add(1)
+		go func(c string, e string) {
+			data := alphavantage.GetCurrencyData(c, e)
+			cache.Set(c, data)
+			log.Logger.Infof("Refreshed cache for coin: %s", c)
+			wg.Done()
+		}(coinName, exchange)
 	}
+
+	wg.Wait()
+	log.Logger.Infof("Finished updating cache for all coins!")
 }
 
 func InitialiseData() {

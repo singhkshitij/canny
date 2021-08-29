@@ -9,7 +9,7 @@ import (
 	"sort"
 )
 
-func GetCurrencyData(symbol string, market string, res chan *DailyCurrencyDataResponse) {
+func GetCurrencyData(symbol string, market string) *DailyCurrencyDataResponse {
 	log.Logger.Debugf("Getting data for currency %s", symbol)
 
 	url := config.Cfg().String("alphavantage.client.url")
@@ -20,13 +20,12 @@ func GetCurrencyData(symbol string, market string, res chan *DailyCurrencyDataRe
 		"apikey":   config.Cfg().String("alphavantage.client.apiKey"),
 	}
 
-	resp, err := http.GetAsync(url, params)
+	resp, err := http.Get(url, params)
 	if err != nil {
 		log.Logger.Errorf("Failed to get currency data for currency %s, recieved response code %s", symbol, err.Error())
-		return
+		return nil
 	}
-	data := handleResponse(resp)
-	res <- data
+	return handleResponse(resp)
 }
 
 func handleResponse(resp *resty.Response) *DailyCurrencyDataResponse {

@@ -10,7 +10,7 @@ func Setup() {
 	client = resty.New()
 }
 
-func GetAsync(url string, queryParams map[string]string) (*resty.Response, error) {
+func Get(url string, queryParams map[string]string) (*resty.Response, error) {
 	resp, err := client.R().
 		SetQueryParams(queryParams).
 		SetHeader("Accept", "application/json").

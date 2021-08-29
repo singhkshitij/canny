@@ -8,7 +8,7 @@ app:
     data:
       currency: 365
   release:
-    env: "prod"
+    env: "dev"
   server:
     port: 8090
     readTimeout: 10
@@ -19,5 +19,4 @@ app:
       - "MATIC"
       - "ADA"
       - "ETH"
-    exchange:
-      - "INR"
+    exchange: "INR"
