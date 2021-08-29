@@ -1,36 +1,32 @@
 package alphavantage
 
 import (
+	"canny/pkg/http"
 	"canny/pkg/log"
 	"encoding/json"
 	"github.com/go-resty/resty/v2"
 	"sort"
 )
 
-var client *resty.Client
-
-func Setup() {
-	client = resty.New()
-}
-
 // TODO make this an async process so that all coin calls can be in parellel
-func GetCurrencyData(symbol string, market string) *DailyCurrencyDataResponse {
+func GetCurrencyData(symbol string, market string, res chan *DailyCurrencyDataResponse) {
 
 	// TODO move api key to config
-	resp, err := client.R().
-		SetQueryParams(map[string]string{
-			"function": "DIGITAL_CURRENCY_DAILY",
-			"symbol":   symbol,
-			"market":   market,
-			"apikey":   "KIKJ1AN4SPAXV1BO",
-		}).
-		SetHeader("Accept", "application/json").
-		Get("https://www.alphavantage.co/query")
-
-	if err != nil {
-		log.Logger.Errorf("Failed to get currency data for %s. Recieved response code %s", symbol, err.Error())
+	url := "https://www.alphavantage.co/query"
+	params := map[string]string{
+		"function": "DIGITAL_CURRENCY_DAILY",
+		"symbol":   symbol,
+		"market":   market,
+		"apikey":   "KIKJ1AN4SPAXV1BO",
 	}
-	return handleResponse(resp)
+
+	resp, err := http.GetAsync(url, params)
+	if err != nil {
+		log.Logger.Errorf("Failed to get currency data, recieved response code %s", err.Error())
+		return
+	}
+	data := handleResponse(resp)
+	res <- data
 }
 
 func handleResponse(resp *resty.Response) *DailyCurrencyDataResponse {

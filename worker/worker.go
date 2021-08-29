@@ -3,12 +3,13 @@ package worker
 import (
 	"canny/pkg/alphavantage"
 	"canny/pkg/cache"
+	"canny/pkg/http"
 	"canny/pkg/log"
 	"canny/pkg/scheduler"
 )
 
 func Setup() {
-	alphavantage.Setup()
+	http.Setup()
 	cache.Setup()
 	scheduler.Setup()
 }
@@ -27,7 +28,9 @@ func RefreshCache() {
 	coins := getEligibleCoins()
 	exchange := getEligibleExchangeCurrency()
 	for _, coinName := range coins {
-		data := alphavantage.GetCurrencyData(coinName, exchange)
+		responseChannel := make(chan *alphavantage.DailyCurrencyDataResponse)
+		go alphavantage.GetCurrencyData(coinName, exchange, responseChannel)
+		data := <-responseChannel
 		cache.Set(coinName, data)
 		log.Logger.Infof("Refreshed cache for coin %s", coinName)
 	}
