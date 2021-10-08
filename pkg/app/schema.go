@@ -36,3 +36,12 @@ type CurrencyDataResponse struct {
 	Msg  string                                 `json:"msg"`
 	Data alphavantage.DailyCurrencyDataResponse `json:"data"`
 }
+
+type ClosingPrice struct {
+	Inr string `json:"inr"`
+	Usd string `json:"usd"`
+}
+
+type AllCurrencyPriceResponse struct {
+	Data map[string]ClosingPrice `json:"data"`
+}

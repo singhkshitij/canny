@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"canny/pkg/alphavantage"
 	"canny/pkg/log"
 	"github.com/patrickmn/go-cache"
 	"time"
@@ -13,7 +12,7 @@ func Setup() {
 	client = cache.New(48*time.Hour, 24*time.Hour)
 }
 
-func Set(key string, value *alphavantage.DailyCurrencyDataResponse){
+func Set(key string, value interface{}){
 	client.Set(key, value, cache.DefaultExpiration)
 }
 

@@ -15,10 +15,6 @@ definitions:
         type: string
       3. Digital Currency Name:
         type: string
-      4. Market Code:
-        type: string
-      5. Market Name:
-        type: string
       6. Last Refreshed:
         type: string
       7. Time Zone:
@@ -26,9 +22,23 @@ definitions:
     type: object
   alphavantage.PriceDataResponse:
     properties:
-      2a. high (INR):
+      4a. close (INR):
         type: string
-      2b. high (USD):
+      4b. close (USD):
+        type: string
+    type: object
+  app.AllCurrencyPriceResponse:
+    properties:
+      data:
+        additionalProperties:
+          $ref: '#/definitions/app.ClosingPrice'
+        type: object
+    type: object
+  app.ClosingPrice:
+    properties:
+      inr:
+        type: string
+      usd:
         type: string
     type: object
   app.CurrenciesResponse:
@@ -109,6 +119,22 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: Get coin data
+      tags:
+      - currency
+  /api/v1/currencies/price:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.AllCurrencyPriceResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Get all coin last price
       tags:
       - currency
   /ping:
