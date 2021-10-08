@@ -1,8 +1,8 @@
-package routers
+package service
 
 import (
 	_ "canny/docs"
-	v1 "canny/routers/api/v1"
+	v1 "canny/service/api/v1"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -11,8 +11,8 @@ import (
 
 // @Summary health check endpoint
 // @Produce json
-// @Success 200 {object} app.Response
-// @Failure 500 {object} app.Response
+// @Success 200 {object} meta.Response
+// @Failure 500 {object} meta.Response
 // @Router /ping [get]
 // @tags health-check
 func ping(c *gin.Context) {

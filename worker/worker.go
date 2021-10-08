@@ -2,7 +2,7 @@ package worker
 
 import (
 	"canny/pkg/alphavantage"
-	"canny/pkg/app"
+	"canny/pkg/meta"
 	"canny/pkg/cache"
 	"canny/pkg/config"
 	"canny/pkg/http"
@@ -20,11 +20,11 @@ func Setup() {
 }
 
 func getEligibleExchangeCurrency() string {
-	return config.Cfg().String("app.currencies.exchange")
+	return config.Cfg().String("meta.currencies.exchange")
 }
 
 func getEligibleCoins() []string {
-	return config.Cfg().Strings("app.currencies.allowed")
+	return config.Cfg().Strings("meta.currencies.allowed")
 }
 
 func RefreshCache() {
@@ -34,7 +34,7 @@ func RefreshCache() {
 
 	var wg sync.WaitGroup
 
-	allCoinPrices := make(map[string]app.ClosingPrice)
+	allCoinPrices := make(map[string]meta.ClosingPrice)
 
 	for _, coinName := range coins {
 		wg.Add(1)
@@ -51,8 +51,8 @@ func RefreshCache() {
 	log.Logger.Infof("Finished updating cache for all coins!")
 }
 
-func addClosePriceToAllCoinPrices(data *alphavantage.DailyCurrencyDataResponse) app.ClosingPrice {
-	return app.ClosingPrice{
+func addClosePriceToAllCoinPrices(data *alphavantage.DailyCurrencyDataResponse) meta.ClosingPrice {
+	return meta.ClosingPrice{
 		Inr: data.TimeSeriesDigitalCurrencyDaily[strings.Split(data.MetaData.LastRefreshed, " ")[0]].CloseINR,
 		Usd: data.TimeSeriesDigitalCurrencyDaily[strings.Split(data.MetaData.LastRefreshed, " ")[0]].CloseUSD,
 	}

@@ -14,10 +14,10 @@ type Server struct {
 var ServerSetting = &Server{}
 
 func Setup() {
-	readTimeout := config.Cfg().Int("app.server.readTimeout")
-	writeTimeout := config.Cfg().Int("app.server.writeTimeout")
+	readTimeout := config.Cfg().Int("meta.server.readTimeout")
+	writeTimeout := config.Cfg().Int("meta.server.writeTimeout")
 
-	ServerSetting.Port = config.Cfg().Int("app.server.port")
+	ServerSetting.Port = config.Cfg().Int("meta.server.port")
 	ServerSetting.ReadTimeout = time.Duration(readTimeout) * time.Second
 	ServerSetting.WriteTimeout = time.Duration(writeTimeout) * time.Second
 }

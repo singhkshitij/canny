@@ -4,7 +4,7 @@ import (
 	"canny/pkg/config"
 	"canny/pkg/log"
 	"canny/pkg/setting"
-	"canny/routers"
+	"canny/service"
 	"canny/worker"
 	"fmt"
 	"net/http"
@@ -33,7 +33,7 @@ func init() {
 
 // @BasePath /
 func main() {
-	initRouter := routers.InitRouter()
+	initRouter := service.InitRouter()
 
 	serverPort := fmt.Sprintf(":%d", setting.ServerSetting.Port)
 	server := &http.Server{
