@@ -5,6 +5,7 @@ import (
 	"canny/pkg/cache"
 	"canny/pkg/config"
 	"canny/pkg/err"
+	"canny/pkg/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,4 +38,20 @@ func CurrencyData(c *gin.Context) {
 		appG.Response(200, err.Success, data)
 	}
 
+}
+
+// @Summary Get all coin last price
+// @Produce json
+// @Success 200 {object} app.AllCurrencyPriceResponse
+// @Failure 500 {object} app.Response
+// @Router /api/v1/currencies/price [get]
+// @tags currency
+func AllCurrencyData(c *gin.Context) {
+	appG := app.Gin{C: c}
+	data := cache.Get(utils.AllCoinPriceKey)
+	if data == nil {
+		appG.Response(404, err.NotFound, map[string]string{})
+	} else {
+		appG.Response(200, err.Success, data)
+	}
 }

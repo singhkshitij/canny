@@ -57,6 +57,31 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/currencies/price": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "currency"
+                ],
+                "summary": "Get all coin last price",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.AllCurrencyPriceResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/currencies/{currency}": {
             "get": {
                 "produces": [
@@ -141,12 +166,6 @@ var doc = `{
                 "3. Digital Currency Name": {
                     "type": "string"
                 },
-                "4. Market Code": {
-                    "type": "string"
-                },
-                "5. Market Name": {
-                    "type": "string"
-                },
                 "6. Last Refreshed": {
                     "type": "string"
                 },
@@ -158,10 +177,32 @@ var doc = `{
         "alphavantage.PriceDataResponse": {
             "type": "object",
             "properties": {
-                "2a. high (INR)": {
+                "4a. close (INR)": {
                     "type": "string"
                 },
-                "2b. high (USD)": {
+                "4b. close (USD)": {
+                    "type": "string"
+                }
+            }
+        },
+        "app.AllCurrencyPriceResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/app.ClosingPrice"
+                    }
+                }
+            }
+        },
+        "app.ClosingPrice": {
+            "type": "object",
+            "properties": {
+                "inr": {
+                    "type": "string"
+                },
+                "usd": {
                     "type": "string"
                 }
             }
