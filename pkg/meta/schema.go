@@ -1,4 +1,4 @@
-package app
+package meta
 
 import (
 	"canny/pkg/alphavantage"

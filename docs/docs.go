@@ -45,13 +45,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/app.CurrenciesResponse"
+                            "$ref": "#/definitions/meta.CurrenciesResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/app.Response"
+                            "$ref": "#/definitions/meta.Response"
                         }
                     }
                 }
@@ -70,13 +70,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/app.AllCurrencyPriceResponse"
+                            "$ref": "#/definitions/meta.AllCurrencyPriceResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/app.Response"
+                            "$ref": "#/definitions/meta.Response"
                         }
                     }
                 }
@@ -104,13 +104,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/app.CurrencyDataResponse"
+                            "$ref": "#/definitions/meta.CurrencyDataResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/app.Response"
+                            "$ref": "#/definitions/meta.Response"
                         }
                     }
                 }
@@ -129,13 +129,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/app.Response"
+                            "$ref": "#/definitions/meta.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/app.Response"
+                            "$ref": "#/definitions/meta.Response"
                         }
                     }
                 }
@@ -185,18 +185,18 @@ var doc = `{
                 }
             }
         },
-        "app.AllCurrencyPriceResponse": {
+        "meta.AllCurrencyPriceResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/app.ClosingPrice"
+                        "$ref": "#/definitions/meta.ClosingPrice"
                     }
                 }
             }
         },
-        "app.ClosingPrice": {
+        "meta.ClosingPrice": {
             "type": "object",
             "properties": {
                 "inr": {
@@ -207,7 +207,7 @@ var doc = `{
                 }
             }
         },
-        "app.CurrenciesResponse": {
+        "meta.CurrenciesResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -224,7 +224,7 @@ var doc = `{
                 }
             }
         },
-        "app.CurrencyDataResponse": {
+        "meta.CurrencyDataResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -238,7 +238,7 @@ var doc = `{
                 }
             }
         },
-        "app.Response": {
+        "meta.Response": {
             "type": "object",
             "properties": {
                 "code": {
