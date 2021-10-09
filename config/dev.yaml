@@ -10,7 +10,7 @@ app:
   release:
     env: "dev"
   server:
-    port: 8090
+    port: 8080
     readTimeout: 10
     writeTimeout: 10
   currencies:

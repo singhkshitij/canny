@@ -32,6 +32,42 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/alert": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alert"
+                ],
+                "summary": "Get coin data",
+                "parameters": [
+                    {
+                        "description": "Alert Data",
+                        "name": "alert",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateAlertRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateAlertResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/currencies": {
             "get": {
                 "produces": [
@@ -45,13 +81,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/meta.CurrenciesResponse"
+                            "$ref": "#/definitions/model.CurrenciesResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     }
                 }
@@ -70,13 +106,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/meta.AllCurrencyPriceResponse"
+                            "$ref": "#/definitions/model.AllCurrencyPriceResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     }
                 }
@@ -104,13 +140,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/meta.CurrencyDataResponse"
+                            "$ref": "#/definitions/model.CurrencyDataResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     }
                 }
@@ -129,13 +165,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     }
                 }
@@ -185,18 +221,18 @@ var doc = `{
                 }
             }
         },
-        "meta.AllCurrencyPriceResponse": {
+        "model.AllCurrencyPriceResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/meta.ClosingPrice"
+                        "$ref": "#/definitions/model.ClosingPrice"
                     }
                 }
             }
         },
-        "meta.ClosingPrice": {
+        "model.ClosingPrice": {
             "type": "object",
             "properties": {
                 "inr": {
@@ -207,7 +243,71 @@ var doc = `{
                 }
             }
         },
-        "meta.CurrenciesResponse": {
+        "model.CreateAlertRequest": {
+            "type": "object",
+            "required": [
+                "currency",
+                "name",
+                "operator",
+                "percentage",
+                "property",
+                "symbol",
+                "value"
+            ],
+            "properties": {
+                "currency": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "percentage": {
+                    "type": "integer"
+                },
+                "property": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CreateAlertResponse": {
+            "type": "object",
+            "properties": {
+                "currency": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "percentage": {
+                    "type": "integer"
+                },
+                "property": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CurrenciesResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -224,7 +324,7 @@ var doc = `{
                 }
             }
         },
-        "meta.CurrencyDataResponse": {
+        "model.CurrencyDataResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -238,7 +338,7 @@ var doc = `{
                 }
             }
         },
-        "meta.Response": {
+        "model.Response": {
             "type": "object",
             "properties": {
                 "code": {

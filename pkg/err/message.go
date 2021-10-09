@@ -4,6 +4,7 @@ var MsgFlags = map[int]string{
 	Success:  "ok",
 	Error:    "fail",
 	NotFound: "not found",
+	BadRequest: "bad request",
 }
 
 // GetMsg get err information based on Code

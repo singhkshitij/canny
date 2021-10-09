@@ -11,8 +11,8 @@ import (
 
 // @Summary health check endpoint
 // @Produce json
-// @Success 200 {object} meta.Response
-// @Failure 500 {object} meta.Response
+// @Success 200 {object} model.Response
+// @Failure 500 {object} model.Response
 // @Router /ping [get]
 // @tags health-check
 func ping(c *gin.Context) {
@@ -36,5 +36,6 @@ func InitRouter() (r *gin.Engine) {
 	apiV1.GET("currencies", v1.Currencies)
 	apiV1.GET("currencies/price", v1.AllCurrencyData)
 	apiV1.GET("currencies/:currency", v1.CurrencyData)
+	apiV1.POST("alert", v1.CreateAlert)
 	return
 }

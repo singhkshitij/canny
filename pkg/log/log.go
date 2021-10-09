@@ -9,7 +9,7 @@ var Logger *zap.SugaredLogger
 
 // Setup initialise logger
 func Setup() {
-	env := config.Cfg().String("meta.release.env")
+	env := config.Cfg().String("model.release.env")
 	var zapper *zap.Logger
 	if env == "prod" {
 		zapper, _ = zap.NewProduction()
