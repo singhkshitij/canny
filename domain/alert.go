@@ -21,10 +21,20 @@ func GetAllAlerts() []map[string]interface{} {
 
 func DeleteAlert(alertId string) (error, int) {
 	er, code := firebase.Delete(sampleEmail, alertId)
-	if er != nil {
+	if code == 404 {
+		return nil, err.NotFound
+	} else if er != nil {
 		return er, 0
-	}else if code == 404 {
-		return  nil, err.NotFound
 	}
 	return nil, err.Success
+}
+
+func GetAlert(alertId string) (map[string]interface{}, error, int) {
+	data, er, errCode := firebase.Get(sampleEmail, alertId)
+	if errCode == err.NotFound {
+		return nil, er, err.NotFound
+	} else if er != nil {
+		return nil, er, errCode
+	}
+	return data, nil, err.Success
 }

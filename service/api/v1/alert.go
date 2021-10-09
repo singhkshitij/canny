@@ -44,6 +44,26 @@ func GetAlerts(c *gin.Context) {
 	appG.Response(200, err.Success, data)
 }
 
+// @Summary Get alert details
+// @Produce json
+// @Param id path string true "alert id"
+// @Success 200 {object} model.CreateAlertResponse
+// @Failure 500 {object} model.Response
+// @Router /api/v1/alerts/{id} [get]
+// @tags alerts
+func GetAlert(c *gin.Context) {
+	appG := model.Gin{C: c}
+	alertId := c.Param("id")
+	data, er, code := domain.GetAlert(alertId)
+	if code == err.NotFound {
+		appG.Response(404, err.NotFound, map[string]string{})
+	} else if er != nil {
+		appG.Response(500, err.Error, map[string]string{})
+	} else {
+		appG.Response(200, err.Success, data)
+	}
+}
+
 // @Summary Delete active alert
 // @Produce json
 // @Param id path string true "alert id"
