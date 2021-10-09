@@ -4,6 +4,7 @@ import (
 	"canny/pkg/alphavantage"
 	"canny/pkg/err"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 type Gin struct {
@@ -43,6 +44,8 @@ type ClosingPrice struct {
 }
 
 type AllCurrencyPriceResponse struct {
+	Code int                     `json:"code"`
+	Msg  string                  `json:"msg"`
 	Data map[string]ClosingPrice `json:"data"`
 }
 
@@ -56,13 +59,26 @@ type CreateAlertRequest struct {
 	Currency   string `json:"currency" validate:"required"`
 }
 
+type CreateAlertResponseData struct {
+	Id         string    `json:"id"`
+	Name       string    `json:"name"`
+	Property   string    `json:"property"`
+	Symbol     string    `json:"symbol"`
+	Operator   string    `json:"operator"`
+	Value      int64     `json:"value"`
+	Percentage int64     `json:"percentage"`
+	Currency   string    `json:"currency"`
+	CreatedAt  time.Time `json:"createdAt"`
+}
+
 type CreateAlertResponse struct {
-	Id         int64  `json:"id"`
-	Name       string `json:"name"`
-	Property   string `json:"property"`
-	Symbol     string `json:"symbol"`
-	Operator   string `json:"operator"`
-	Value      int64  `json:"value"`
-	Percentage int64  `json:"percentage"`
-	Currency   string `json:"currency"`
+	Code int                     `json:"code"`
+	Msg  string                  `json:"msg"`
+	Data CreateAlertResponseData `json:"data"`
+}
+
+type GetAllAlertResponse struct {
+	Code int                       `json:"code"`
+	Msg  string                    `json:"msg"`
+	Data []CreateAlertResponseData `json:"data"`
 }

@@ -29,10 +29,14 @@ definitions:
     type: object
   model.AllCurrencyPriceResponse:
     properties:
+      code:
+        type: integer
       data:
         additionalProperties:
           $ref: '#/definitions/model.ClosingPrice'
         type: object
+      msg:
+        type: string
     type: object
   model.ClosingPrice:
     properties:
@@ -61,17 +65,26 @@ definitions:
     - currency
     - name
     - operator
-    - percentage
     - property
     - symbol
-    - value
     type: object
   model.CreateAlertResponse:
     properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/model.CreateAlertResponseData'
+      msg:
+        type: string
+    type: object
+  model.CreateAlertResponseData:
+    properties:
+      createdAt:
+        type: string
       currency:
         type: string
       id:
-        type: integer
+        type: string
       name:
         type: string
       operator:
@@ -105,6 +118,17 @@ definitions:
       msg:
         type: string
     type: object
+  model.GetAllAlertResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/model.CreateAlertResponseData'
+        type: array
+      msg:
+        type: string
+    type: object
   model.Response:
     properties:
       code:
@@ -127,7 +151,22 @@ info:
   title: Canny documentation
   version: "1.0"
 paths:
-  /api/v1/alert:
+  /api/v1/alerts:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetAllAlertResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get all alerts for user
+      tags:
+      - alert
     post:
       parameters:
       - description: Alert Data
@@ -147,7 +186,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.Response'
-      summary: Get coin data
+      summary: Create an alert for user
       tags:
       - alert
   /api/v1/currencies:

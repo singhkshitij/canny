@@ -32,7 +32,30 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/alert": {
+        "/api/v1/alerts": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alert"
+                ],
+                "summary": "Get all alerts for user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.GetAllAlertResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "produces": [
                     "application/json"
@@ -40,7 +63,7 @@ var doc = `{
                 "tags": [
                     "alert"
                 ],
-                "summary": "Get coin data",
+                "summary": "Create an alert for user",
                 "parameters": [
                     {
                         "description": "Alert Data",
@@ -224,11 +247,17 @@ var doc = `{
         "model.AllCurrencyPriceResponse": {
             "type": "object",
             "properties": {
+                "code": {
+                    "type": "integer"
+                },
                 "data": {
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "#/definitions/model.ClosingPrice"
                     }
+                },
+                "msg": {
+                    "type": "string"
                 }
             }
         },
@@ -249,10 +278,8 @@ var doc = `{
                 "currency",
                 "name",
                 "operator",
-                "percentage",
                 "property",
-                "symbol",
-                "value"
+                "symbol"
             ],
             "properties": {
                 "currency": {
@@ -281,11 +308,28 @@ var doc = `{
         "model.CreateAlertResponse": {
             "type": "object",
             "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/model.CreateAlertResponseData"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateAlertResponseData": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
                 "currency": {
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -332,6 +376,23 @@ var doc = `{
                 },
                 "data": {
                     "$ref": "#/definitions/alphavantage.DailyCurrencyDataResponse"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.GetAllAlertResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.CreateAlertResponseData"
+                    }
                 },
                 "msg": {
                     "type": "string"

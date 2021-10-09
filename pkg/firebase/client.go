@@ -6,6 +6,7 @@ import (
 	"context"
 	firebase "firebase.google.com/go"
 	"go.uber.org/zap"
+	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
 
@@ -27,12 +28,54 @@ func Initialise() {
 	if err != nil {
 		log.Logger.Fatal("Failed to initialise firebase client ", zap.Error(err))
 	}
-	//defer client.Close()
 }
 
-func Add(collection string, data interface{}) {
-	_, _, err := client.Collection(collection).Add(ctx, data)
+func Shutdown() {
+	defer func(client *firestore.Client) {
+		err := client.Close()
+		if err != nil {
+			log.Logger.Fatal("Failed to close firebase connection : %v", err)
+		}
+	}(client)
+}
+
+func GetAll(collection string) []map[string]interface{} {
+	items := make([]map[string]interface{}, 0)
+	iter := client.Collection(collection).Documents(ctx)
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			log.Logger.Fatal("Failed getting bulk data from firebase : %v", err)
+		}
+		data := doc.Data()
+		data["createdAt"] = doc.CreateTime
+		data["id"] = doc.Ref.ID
+		items = append(items, data)
+	}
+	return items
+}
+
+func Get(collection string, id string) map[string]interface{} {
+	var data map[string]interface{}
+	item, err := client.Collection(collection).Doc(id).Get(ctx)
+	if err != nil {
+		log.Logger.Fatal("Failed getting data from firebase : %v", err)
+	} else {
+		data = item.Data()
+		data["createdAt"] = item.CreateTime
+		data["id"] = id
+	}
+	return data
+}
+
+func Add(collection string, data interface{}) map[string]interface{} {
+	documentRef, _, err := client.Collection(collection).Add(ctx, data)
 	if err != nil {
 		log.Logger.Fatal("Failed adding data to firebase : %v", err)
 	}
+	savedData := Get(collection, documentRef.ID)
+	return savedData
 }

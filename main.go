@@ -36,6 +36,7 @@ func init() {
 // @BasePath /
 func main() {
 	initRouter := service.InitRouter()
+	defer shutdown()
 
 	serverPort := fmt.Sprintf(":%d", setting.ServerSetting.Port)
 	server := &http.Server{
@@ -48,4 +49,9 @@ func main() {
 	log.Logger.Infow("Starting server with configs : " , "port", serverPort)
 
 	server.ListenAndServe()
+}
+
+func shutdown() {
+	firebase.Shutdown()
+	log.Shutdown()
 }

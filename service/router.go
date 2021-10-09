@@ -36,6 +36,8 @@ func InitRouter() (r *gin.Engine) {
 	apiV1.GET("currencies", v1.Currencies)
 	apiV1.GET("currencies/price", v1.AllCurrencyData)
 	apiV1.GET("currencies/:currency", v1.CurrencyData)
-	apiV1.POST("alert", v1.CreateAlert)
+
+	apiV1.POST("alerts", v1.CreateAlert)
+	apiV1.GET("alerts", v1.GetAlerts)
 	return
 }

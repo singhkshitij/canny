@@ -8,12 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Get coin data
+// @Summary Create an alert for user
 // @Produce json
 // @Param alert body model.CreateAlertRequest true "Alert Data"
 // @Success 200 {object} model.CreateAlertResponse
 // @Failure 500 {object} model.Response
-// @Router /api/v1/alert [post]
+// @Router /api/v1/alerts [post]
 // @tags alert
 func CreateAlert(c *gin.Context) {
 	appG := model.Gin{C: c}
@@ -30,4 +30,16 @@ func CreateAlert(c *gin.Context) {
 			appG.Response(200, err.Success, savedData)
 		}
 	}
+}
+
+// @Summary Get all alerts for user
+// @Produce json
+// @Success 200 {object} model.GetAllAlertResponse
+// @Failure 500 {object} model.Response
+// @Router /api/v1/alerts [get]
+// @tags alert
+func GetAlerts(c *gin.Context) {
+	appG := model.Gin{C: c}
+	data := domain.GetAllAlerts()
+	appG.Response(200, err.Success, data)
 }
