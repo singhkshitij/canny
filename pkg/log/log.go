@@ -5,18 +5,29 @@ import (
 	"go.uber.org/zap"
 )
 
-var Logger *zap.SugaredLogger
+var (
+	Logger *zap.SugaredLogger
+	zapper *zap.Logger
+)
 
 // Setup initialise logger
 func Setup() {
-	env := config.Cfg().String("meta.release.env")
-	var zapper *zap.Logger
+	env := config.Cfg().String("app.release.env")
+
 	if env == "prod" {
 		zapper, _ = zap.NewProduction()
 	} else {
 		zapper, _ = zap.NewDevelopment()
 	}
-	defer zapper.Sync()
 	Logger = zapper.Sugar()
 
+}
+
+func Shutdown() {
+	defer func(zapper *zap.Logger) {
+		err := zapper.Sync()
+		if err != nil {
+			Logger.Fatal("Failed to shutdown zapper : %v", err)
+		}
+	}(zapper)
 }

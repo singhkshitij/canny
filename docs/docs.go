@@ -32,6 +32,65 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/alerts": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alert"
+                ],
+                "summary": "Get all alerts for user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.GetAllAlertResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alert"
+                ],
+                "summary": "Create an alert for user",
+                "parameters": [
+                    {
+                        "description": "Alert Data",
+                        "name": "alert",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateAlertRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateAlertResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/currencies": {
             "get": {
                 "produces": [
@@ -45,13 +104,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/meta.CurrenciesResponse"
+                            "$ref": "#/definitions/model.CurrenciesResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     }
                 }
@@ -70,13 +129,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/meta.AllCurrencyPriceResponse"
+                            "$ref": "#/definitions/model.AllCurrencyPriceResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     }
                 }
@@ -104,13 +163,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/meta.CurrencyDataResponse"
+                            "$ref": "#/definitions/model.CurrencyDataResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     }
                 }
@@ -129,13 +188,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/meta.Response"
+                            "$ref": "#/definitions/model.Response"
                         }
                     }
                 }
@@ -185,18 +244,24 @@ var doc = `{
                 }
             }
         },
-        "meta.AllCurrencyPriceResponse": {
+        "model.AllCurrencyPriceResponse": {
             "type": "object",
             "properties": {
+                "code": {
+                    "type": "integer"
+                },
                 "data": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/meta.ClosingPrice"
+                        "$ref": "#/definitions/model.ClosingPrice"
                     }
+                },
+                "msg": {
+                    "type": "string"
                 }
             }
         },
-        "meta.ClosingPrice": {
+        "model.ClosingPrice": {
             "type": "object",
             "properties": {
                 "inr": {
@@ -207,7 +272,86 @@ var doc = `{
                 }
             }
         },
-        "meta.CurrenciesResponse": {
+        "model.CreateAlertRequest": {
+            "type": "object",
+            "required": [
+                "currency",
+                "name",
+                "operator",
+                "property",
+                "symbol"
+            ],
+            "properties": {
+                "currency": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "percentage": {
+                    "type": "integer"
+                },
+                "property": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CreateAlertResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/model.CreateAlertResponseData"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateAlertResponseData": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "percentage": {
+                    "type": "integer"
+                },
+                "property": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CurrenciesResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -224,7 +368,7 @@ var doc = `{
                 }
             }
         },
-        "meta.CurrencyDataResponse": {
+        "model.CurrencyDataResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -238,7 +382,24 @@ var doc = `{
                 }
             }
         },
-        "meta.Response": {
+        "model.GetAllAlertResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.CreateAlertResponseData"
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Response": {
             "type": "object",
             "properties": {
                 "code": {

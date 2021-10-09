@@ -12,8 +12,8 @@ func Setup() {
 	client = cache.New(48*time.Hour, 24*time.Hour)
 }
 
-func Set(key string, value interface{}){
-	client.Set(key, value, cache.DefaultExpiration)
+func Set(keyName string, value interface{}) {
+	client.Set(keyName, value, cache.DefaultExpiration)
 }
 
 func Get(key string) interface{} {

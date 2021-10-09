@@ -52,7 +52,7 @@ func limitNumberOfEntriesAndTransformKeys(response *DailyCurrencyDataResponse) m
 	}
 	sort.Sort(sort.Reverse(sort.StringSlice(keys)))
 
-	limitedTimeSeriesDates := make([]string, config.Cfg().Int("meta.limit.data.currency"))
+	limitedTimeSeriesDates := make([]string, config.Cfg().Int("app.limit.data.currency"))
 	copy(limitedTimeSeriesDates, keys)
 	limitedTimeSeriesData := make(map[string]*PriceDataResponse)
 

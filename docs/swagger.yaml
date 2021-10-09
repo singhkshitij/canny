@@ -27,21 +27,78 @@ definitions:
       4b. close (USD):
         type: string
     type: object
-  app.AllCurrencyPriceResponse:
+  model.AllCurrencyPriceResponse:
     properties:
+      code:
+        type: integer
       data:
         additionalProperties:
-          $ref: '#/definitions/app.ClosingPrice'
+          $ref: '#/definitions/model.ClosingPrice'
         type: object
+      msg:
+        type: string
     type: object
-  app.ClosingPrice:
+  model.ClosingPrice:
     properties:
       inr:
         type: string
       usd:
         type: string
     type: object
-  app.CurrenciesResponse:
+  model.CreateAlertRequest:
+    properties:
+      currency:
+        type: string
+      name:
+        type: string
+      operator:
+        type: string
+      percentage:
+        type: integer
+      property:
+        type: string
+      symbol:
+        type: string
+      value:
+        type: integer
+    required:
+    - currency
+    - name
+    - operator
+    - property
+    - symbol
+    type: object
+  model.CreateAlertResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/model.CreateAlertResponseData'
+      msg:
+        type: string
+    type: object
+  model.CreateAlertResponseData:
+    properties:
+      createdAt:
+        type: string
+      currency:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      operator:
+        type: string
+      percentage:
+        type: integer
+      property:
+        type: string
+      symbol:
+        type: string
+      value:
+        type: integer
+    type: object
+  model.CurrenciesResponse:
     properties:
       code:
         type: integer
@@ -52,7 +109,7 @@ definitions:
       msg:
         type: string
     type: object
-  app.CurrencyDataResponse:
+  model.CurrencyDataResponse:
     properties:
       code:
         type: integer
@@ -61,7 +118,18 @@ definitions:
       msg:
         type: string
     type: object
-  app.Response:
+  model.GetAllAlertResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/model.CreateAlertResponseData'
+        type: array
+      msg:
+        type: string
+    type: object
+  model.Response:
     properties:
       code:
         type: integer
@@ -83,6 +151,44 @@ info:
   title: Canny documentation
   version: "1.0"
 paths:
+  /api/v1/alerts:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetAllAlertResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get all alerts for user
+      tags:
+      - alert
+    post:
+      parameters:
+      - description: Alert Data
+        in: body
+        name: alert
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateAlertRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CreateAlertResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Create an alert for user
+      tags:
+      - alert
   /api/v1/currencies:
     get:
       produces:
@@ -91,11 +197,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/app.CurrenciesResponse'
+            $ref: '#/definitions/model.CurrenciesResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/app.Response'
+            $ref: '#/definitions/model.Response'
       summary: Get supported currencies
       tags:
       - currency
@@ -113,11 +219,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/app.CurrencyDataResponse'
+            $ref: '#/definitions/model.CurrencyDataResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/app.Response'
+            $ref: '#/definitions/model.Response'
       summary: Get coin data
       tags:
       - currency
@@ -129,11 +235,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/app.AllCurrencyPriceResponse'
+            $ref: '#/definitions/model.AllCurrencyPriceResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/app.Response'
+            $ref: '#/definitions/model.Response'
       summary: Get all coin last price
       tags:
       - currency
@@ -145,11 +251,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/app.Response'
+            $ref: '#/definitions/model.Response'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/app.Response'
+            $ref: '#/definitions/model.Response'
       summary: health check endpoint
       tags:
       - health-check

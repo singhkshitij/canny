@@ -1,37 +1,34 @@
 package v1
 
 import (
-	"canny/pkg/meta"
-	"canny/pkg/cache"
-	"canny/pkg/config"
+	"canny/domain"
+	"canny/model"
 	"canny/pkg/err"
-	"canny/pkg/utils"
 	"github.com/gin-gonic/gin"
 )
 
 // @Summary Get supported currencies
 // @Produce  json
-// @Success 200 {object} meta.CurrenciesResponse
-// @Failure 500 {object} meta.Response
+// @Success 200 {object} model.CurrenciesResponse
+// @Failure 500 {object} model.Response
 // @Router /api/v1/currencies [get]
 // @tags currency
 func Currencies(c *gin.Context) {
-	appG := meta.Gin{C: c}
-	supportedCoins := config.Cfg().Strings("meta.currencies.allowed")
-	appG.Response(200, err.Success, supportedCoins)
+	appG := model.Gin{C: c}
+	appG.Response(200, err.Success, domain.GetAllSupportedCoins())
 }
 
 // @Summary Get coin data
 // @Produce json
 // @Param currency path string true "Symbol"
-// @Success 200 {object} meta.CurrencyDataResponse
-// @Failure 500 {object} meta.Response
+// @Success 200 {object} model.CurrencyDataResponse
+// @Failure 500 {object} model.Response
 // @Router /api/v1/currencies/{currency} [get]
 // @tags currency
 func CurrencyData(c *gin.Context) {
-	appG := meta.Gin{C: c}
+	appG := model.Gin{C: c}
 	coinName := c.Param("currency")
-	data := cache.Get(coinName)
+	data := domain.GetCoinCurrencyData(coinName)
 	if data == nil {
 		appG.Response(404, err.NotFound, map[string]string{})
 	} else {
@@ -42,13 +39,13 @@ func CurrencyData(c *gin.Context) {
 
 // @Summary Get all coin last price
 // @Produce json
-// @Success 200 {object} meta.AllCurrencyPriceResponse
-// @Failure 500 {object} meta.Response
+// @Success 200 {object} model.AllCurrencyPriceResponse
+// @Failure 500 {object} model.Response
 // @Router /api/v1/currencies/price [get]
 // @tags currency
 func AllCurrencyData(c *gin.Context) {
-	appG := meta.Gin{C: c}
-	data := cache.Get(utils.AllCoinPriceKey)
+	appG := model.Gin{C: c}
+	data := domain.GetAllCurrencyData()
 	if data == nil {
 		appG.Response(404, err.NotFound, map[string]string{})
 	} else {

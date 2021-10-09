@@ -2,6 +2,7 @@ package main
 
 import (
 	"canny/pkg/config"
+	"canny/pkg/firebase"
 	"canny/pkg/log"
 	"canny/pkg/setting"
 	"canny/service"
@@ -17,6 +18,7 @@ func init() {
 	setting.Setup()
 	worker.Setup()
 	worker.InitialiseData()
+	firebase.Initialise()
 }
 
 // @title Canny documentation
@@ -34,6 +36,7 @@ func init() {
 // @BasePath /
 func main() {
 	initRouter := service.InitRouter()
+	defer shutdown()
 
 	serverPort := fmt.Sprintf(":%d", setting.ServerSetting.Port)
 	server := &http.Server{
@@ -46,4 +49,9 @@ func main() {
 	log.Logger.Infow("Starting server with configs : " , "port", serverPort)
 
 	server.ListenAndServe()
+}
+
+func shutdown() {
+	firebase.Shutdown()
+	log.Shutdown()
 }
