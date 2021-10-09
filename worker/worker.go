@@ -1,10 +1,10 @@
 package worker
 
 import (
-	"canny/pkg/alphavantage"
+	"canny/domain"
 	"canny/model"
+	"canny/pkg/alphavantage"
 	"canny/pkg/cache"
-	"canny/pkg/config"
 	"canny/pkg/http"
 	"canny/pkg/log"
 	"canny/pkg/scheduler"
@@ -19,18 +19,11 @@ func Setup() {
 	scheduler.Setup()
 }
 
-func getEligibleExchangeCurrency() string {
-	return config.Cfg().String("model.currencies.exchange")
-}
-
-func getEligibleCoins() []string {
-	return config.Cfg().Strings("model.currencies.allowed")
-}
 
 func RefreshCache() {
 
-	coins := getEligibleCoins()
-	exchange := getEligibleExchangeCurrency()
+	coins := domain.GetAllSupportedCoins()
+	exchange := domain.GetEligibleExchangeCurrency()
 
 	var wg sync.WaitGroup
 

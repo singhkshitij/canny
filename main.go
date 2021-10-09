@@ -2,6 +2,7 @@ package main
 
 import (
 	"canny/pkg/config"
+	"canny/pkg/firebase"
 	"canny/pkg/log"
 	"canny/pkg/setting"
 	"canny/service"
@@ -17,6 +18,7 @@ func init() {
 	setting.Setup()
 	worker.Setup()
 	worker.InitialiseData()
+	firebase.Initialise()
 }
 
 // @title Canny documentation

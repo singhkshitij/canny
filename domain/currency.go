@@ -7,7 +7,7 @@ import (
 )
 
 func GetAllSupportedCoins() []string {
-	return config.Cfg().Strings("model.currencies.allowed")
+	return config.Cfg().Strings("app.currencies.allowed")
 }
 
 func GetCoinCurrencyData(coinName string) interface{} {
@@ -16,4 +16,8 @@ func GetCoinCurrencyData(coinName string) interface{} {
 
 func GetAllCurrencyData() interface{} {
 	return cache.Get(utils.AllCoinPriceKey)
+}
+
+func GetEligibleExchangeCurrency() string {
+	return config.Cfg().String("app.currencies.exchange")
 }
