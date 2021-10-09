@@ -38,7 +38,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "alert"
+                    "alerts"
                 ],
                 "summary": "Get all alerts for user",
                 "responses": {
@@ -61,7 +61,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "alert"
+                    "alerts"
                 ],
                 "summary": "Create an alert for user",
                 "parameters": [
@@ -81,6 +81,37 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/model.CreateAlertResponse"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/alerts/{id}": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alerts"
+                ],
+                "summary": "Delete active alert",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "alert id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
                     },
                     "500": {
                         "description": "Internal Server Error",

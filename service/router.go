@@ -39,5 +39,6 @@ func InitRouter() (r *gin.Engine) {
 
 	apiV1.POST("alerts", v1.CreateAlert)
 	apiV1.GET("alerts", v1.GetAlerts)
+	apiV1.DELETE("alerts/:id", v1.DeleteAlert)
 	return
 }
