@@ -45,8 +45,8 @@ func CurrencyData(c *gin.Context) {
 // @tags currency
 func AllCurrencyData(c *gin.Context) {
 	appG := model.Gin{C: c}
-	data := domain.GetAllCurrencyData()
-	if data == nil {
+	data, er := domain.GetAllCurrencyData()
+	if er == err.NotFound {
 		appG.Response(404, err.NotFound, map[string]string{})
 	} else {
 		appG.Response(200, err.Success, data)

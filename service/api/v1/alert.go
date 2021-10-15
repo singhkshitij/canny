@@ -83,3 +83,23 @@ func DeleteAlert(c *gin.Context) {
 		appG.Response(204, err.Success, nil)
 	}
 }
+
+// @Summary Dry run an alert
+// @Produce json
+// @Param alert body model.CreateAlertRequest true "Alert Data"
+// @Success 200 {object} model.DryRunAlertResponse
+// @Failure 500 {object} model.Response
+// @Router /api/v1/alerts/dry-run [post]
+// @tags test
+func DryRun(c *gin.Context) {
+	appG := model.Gin{C: c}
+	var requestBody model.CreateAlertRequest
+	_ = c.BindJSON(&requestBody)
+	validationErr := validate.Validate(requestBody)
+	if validationErr != nil {
+		appG.Response(400, err.BadRequest, validationErr.Error())
+	} else {
+		status := domain.DryRunAlert(requestBody)
+		appG.Response(200, err.Success, &model.DryRunAlertStatus{Passed: status})
+	}
+}

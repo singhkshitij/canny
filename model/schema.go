@@ -38,15 +38,10 @@ type CurrencyDataResponse struct {
 	Data alphavantage.DailyCurrencyDataResponse `json:"data"`
 }
 
-type ClosingPrice struct {
-	Inr string `json:"inr"`
-	Usd string `json:"usd"`
-}
-
 type AllCurrencyPriceResponse struct {
 	Code int                     `json:"code"`
-	Msg  string                  `json:"msg"`
-	Data map[string]ClosingPrice `json:"data"`
+	Msg  string                 `json:"msg"`
+	Data map[string]alphavantage.LatestPrice `json:"data"`
 }
 
 type CreateAlertRequest struct {
@@ -54,8 +49,8 @@ type CreateAlertRequest struct {
 	Property   string `json:"property" validate:"required"`
 	Symbol     string `json:"symbol" validate:"required"`
 	Operator   string `json:"operator" validate:"required"`
-	Value      int64  `json:"value" validate:"required_without=Percentage"`
-	Percentage int64  `json:"percentage" validate:"required_without=Value"`
+	Value      float64  `json:"value" validate:"required_without=Percentage,gte=0"`
+	Percentage int64  `json:"percentage" validate:"required_without=Value,gte=0,lte=100"`
 	Currency   string `json:"currency" validate:"required"`
 }
 
@@ -81,4 +76,19 @@ type GetAllAlertResponse struct {
 	Code int                       `json:"code"`
 	Msg  string                    `json:"msg"`
 	Data []CreateAlertResponseData `json:"data"`
+}
+
+type DryRunAlertStatus struct {
+	Passed bool `json:"passed"`
+}
+
+type DryRunAlertResponse struct {
+	Code int               `json:"code"`
+	Msg  string            `json:"msg"`
+	Data DryRunAlertStatus `json:"data"`
+}
+
+type RulePipelineDataStruct struct {
+	Data             CreateAlertRequest
+	CoinCurrentPrice float64
 }
