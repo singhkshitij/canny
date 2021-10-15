@@ -1,7 +1,6 @@
 package scheduler
 
 import (
-	"canny/pkg/log"
 	"github.com/go-co-op/gocron"
 	"time"
 )
@@ -16,7 +15,6 @@ func Setup() {
 	client.StartAsync()
 }
 
-func Add(t int, f fn) {
-	client.Every(t).Hours().Tag("price").Do(f)
-	log.Logger.Info("Price cache refresh job added !")
+func Add(t int, f fn, tag string) {
+	client.Every(t).Hours().Tag(tag).Do(f)
 }

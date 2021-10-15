@@ -10,7 +10,7 @@ import (
 
 // @Summary Create an alert for user
 // @Produce json
-// @Param alert body model.CreateAlertRequest true "Alert Data"
+// @Param alert body model.CreateAlertRequest true "Alert Alerts"
 // @Success 200 {object} model.CreateAlertResponse
 // @Failure 500 {object} model.Response
 // @Router /api/v1/alerts [post]

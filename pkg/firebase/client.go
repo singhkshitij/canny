@@ -1,6 +1,7 @@
 package firebase
 
 import (
+	"canny/model"
 	err2 "canny/pkg/err"
 	"canny/pkg/log"
 	"canny/pkg/utils"
@@ -41,8 +42,8 @@ func Shutdown() {
 	}(client)
 }
 
-func GetAll(collection string) []map[string]interface{} {
-	items := make([]map[string]interface{}, 0)
+func GetAll(collection string) []model.CreateAlertResponseData {
+	items := make([]model.CreateAlertResponseData, 0)
 	iter := client.Collection(collection).Documents(ctx)
 	for {
 		doc, err := iter.Next()
@@ -53,9 +54,17 @@ func GetAll(collection string) []map[string]interface{} {
 			log.Logger.Fatal("Failed getting alerts from firebase : %v", err)
 		}
 		data := doc.Data()
-		data["createdAt"] = doc.CreateTime
-		data["id"] = doc.Ref.ID
-		items = append(items, data)
+		convData := model.CreateAlertResponseData{
+			Id:         doc.Ref.ID,
+			Name:       data["Name"].(string),
+			Property:   data["Property"].(string),
+			Operator:   data["Operator"].(string),
+			Value:      data["Value"].(float64),
+			Percentage: data["Percentage"].(int64),
+			Currency:   data["Currency"].(string),
+			CreatedAt:  doc.CreateTime,
+		}
+		items = append(items, convData)
 	}
 	return items
 }
@@ -93,4 +102,20 @@ func Delete(collection string, id string) (error, int) {
 		return err, errCode
 	}
 	return nil, 0
+}
+
+func GetAllDocuments() []model.RuleStruct {
+	rules := make([]model.RuleStruct, 0)
+	if client != nil {
+		collectionRef, _ := client.Collections(ctx).GetAll()
+		for _, ref := range collectionRef {
+			rules = append(rules, model.RuleStruct{
+				Owner:  model.RuleOwner{Email: ref.ID},
+				Alerts: GetAll(ref.ID),
+			})
+		}
+	} else {
+		log.Logger.Error("Firebase client not initialised yet!")
+	}
+	return rules
 }

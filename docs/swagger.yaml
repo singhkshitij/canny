@@ -93,8 +93,6 @@ definitions:
         type: integer
       property:
         type: string
-      symbol:
-        type: string
       value:
         type: number
     required:
@@ -102,7 +100,6 @@ definitions:
     - name
     - operator
     - property
-    - symbol
     type: object
   model.CreateAlertResponse:
     properties:
@@ -129,10 +126,8 @@ definitions:
         type: integer
       property:
         type: string
-      symbol:
-        type: string
       value:
-        type: integer
+        type: number
     type: object
   model.CurrenciesResponse:
     properties:
@@ -219,7 +214,7 @@ paths:
       - alerts
     post:
       parameters:
-      - description: Alert Data
+      - description: Alert Alerts
         in: body
         name: alert
         required: true

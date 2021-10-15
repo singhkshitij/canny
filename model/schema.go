@@ -39,28 +39,26 @@ type CurrencyDataResponse struct {
 }
 
 type AllCurrencyPriceResponse struct {
-	Code int                     `json:"code"`
-	Msg  string                 `json:"msg"`
+	Code int                                 `json:"code"`
+	Msg  string                              `json:"msg"`
 	Data map[string]alphavantage.LatestPrice `json:"data"`
 }
 
 type CreateAlertRequest struct {
-	Name       string `json:"name" validate:"required"`
-	Property   string `json:"property" validate:"required"`
-	Symbol     string `json:"symbol" validate:"required"`
-	Operator   string `json:"operator" validate:"required"`
-	Value      float64  `json:"value" validate:"required_without=Percentage,gte=0"`
-	Percentage int64  `json:"percentage" validate:"required_without=Value,gte=0,lte=100"`
-	Currency   string `json:"currency" validate:"required"`
+	Name       string  `json:"name" validate:"required"`
+	Property   string  `json:"property" validate:"required"`
+	Operator   string  `json:"operator" validate:"required"`
+	Value      float64 `json:"value" validate:"required_without=Percentage,gte=0"`
+	Percentage int64   `json:"percentage" validate:"required_without=Value,gte=0,lte=100"`
+	Currency   string  `json:"currency" validate:"required"`
 }
 
 type CreateAlertResponseData struct {
 	Id         string    `json:"id"`
 	Name       string    `json:"name"`
 	Property   string    `json:"property"`
-	Symbol     string    `json:"symbol"`
 	Operator   string    `json:"operator"`
-	Value      int64     `json:"value"`
+	Value      float64     `json:"value"`
 	Percentage int64     `json:"percentage"`
 	Currency   string    `json:"currency"`
 	CreatedAt  time.Time `json:"createdAt"`
@@ -89,6 +87,15 @@ type DryRunAlertResponse struct {
 }
 
 type RulePipelineDataStruct struct {
-	Data             CreateAlertRequest
+	Data             CreateAlertResponseData
 	CoinCurrentPrice float64
+}
+
+type RuleOwner struct {
+	Email string `json:"email"`
+}
+
+type RuleStruct struct {
+	Owner  RuleOwner                 `json:"owner"`
+	Alerts []CreateAlertResponseData `json:"data"`
 }

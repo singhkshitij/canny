@@ -17,8 +17,8 @@ func init() {
 	log.Setup()
 	setting.Setup()
 	worker.Setup()
-	worker.InitialiseData()
 	firebase.Initialise()
+	worker.InitialiseData()
 }
 
 // @title Canny documentation

@@ -6,6 +6,7 @@ import (
 	"canny/pkg/firebase"
 	"canny/pkg/utils"
 	"strconv"
+	"time"
 )
 
 //Ideally this would be extracted from bearer token
@@ -17,7 +18,7 @@ func CreateAlert(data model.CreateAlertRequest) (map[string]interface{}, error) 
 	return savedData, nil
 }
 
-func GetAllAlerts() []map[string]interface{} {
+func GetAllAlerts() []model.CreateAlertResponseData {
 	return firebase.GetAll(sampleEmail)
 }
 
@@ -42,10 +43,19 @@ func GetAlert(alertId string) (map[string]interface{}, error, int) {
 }
 
 func DryRunAlert(data model.CreateAlertRequest) bool {
-	return EvaluateRule(data)
+	return EvaluateRule(model.CreateAlertResponseData{
+		Id:         "",
+		Name:       data.Name,
+		Property:   data.Property,
+		Operator:   data.Operator,
+		Value:      data.Value,
+		Percentage: data.Percentage,
+		Currency:   data.Currency,
+		CreatedAt:  time.Time{},
+	})
 }
 
-func EvaluateRule(data model.CreateAlertRequest) bool {
+func EvaluateRule(data model.CreateAlertResponseData) bool {
 
 	pipelineData := model.RulePipelineDataStruct{Data: data}
 	pipelineData.CoinCurrentPrice, _ = GetCurrentPriceOfCoin(data.Currency, data.Property)
@@ -58,13 +68,13 @@ func EvaluateRule(data model.CreateAlertRequest) bool {
 	case utils.EqualsTo:
 		return data.Value == pipelineData.CoinCurrentPrice
 	case utils.LessThan:
-		return data.Value < pipelineData.CoinCurrentPrice
-	case utils.LessThanEqualTo:
-		return data.Value <= pipelineData.CoinCurrentPrice
-	case utils.GreaterThan:
 		return data.Value > pipelineData.CoinCurrentPrice
-	case utils.GreaterThanEqualTo:
+	case utils.LessThanEqualTo:
 		return data.Value >= pipelineData.CoinCurrentPrice
+	case utils.GreaterThan:
+		return data.Value < pipelineData.CoinCurrentPrice
+	case utils.GreaterThanEqualTo:
+		return data.Value <= pipelineData.CoinCurrentPrice
 	default:
 		return false
 	}
