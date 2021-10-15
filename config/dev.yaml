@@ -20,3 +20,5 @@ app:
       - "ADA"
       - "ETH"
     exchange: "INR"
+  evaluation:
+    delaySeconds: 10

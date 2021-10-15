@@ -3,6 +3,7 @@ package domain
 import (
 	"canny/model"
 	"canny/pkg/firebase"
+	"github.com/davecgh/go-spew/spew"
 )
 
 func GetAllRules() []model.RuleStruct {
@@ -14,7 +15,8 @@ func EvaluateAllRules(rules []model.RuleStruct) {
 		for _ , alert :=  range rule.Alerts {
 			if EvaluateRule(alert) {
 				print("DO SOMETHING AS CONDITION SUCCEEDED")
-				//spew.Dump(rule)
+				spew.Dump(alert, rule.Owner)
+				//TODO send email
 			}
 		}
 	}

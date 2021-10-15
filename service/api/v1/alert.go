@@ -86,7 +86,7 @@ func DeleteAlert(c *gin.Context) {
 
 // @Summary Dry run an alert
 // @Produce json
-// @Param alert body model.CreateAlertRequest true "Alert Alerts"
+// @Param alert body model.CreateAlertRequest true "Alert Data"
 // @Success 200 {object} model.DryRunAlertResponse
 // @Failure 500 {object} model.Response
 // @Router /api/v1/alerts/dry-run [post]

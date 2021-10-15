@@ -2,7 +2,7 @@ basePath: /
 definitions:
   alphavantage.DailyCurrencyDataResponse:
     properties:
-      Meta Alerts:
+      Meta Data:
         $ref: '#/definitions/alphavantage.MetaDataResponse'
       Time Series (Digital Currency Daily):
         additionalProperties:

@@ -40,7 +40,7 @@ type MetaDataResponse struct {
 }
 
 type DailyCurrencyDataResponse struct {
-	MetaData                       MetaDataResponse              `json:"Meta Alerts"`
+	MetaData                       MetaDataResponse              `json:"Meta Data"`
 	TimeSeriesDigitalCurrencyDaily map[string]*PriceDataResponse `json:"Time Series (Digital Currency Daily)"`
 }
 

@@ -68,13 +68,13 @@ func EvaluateRule(data model.CreateAlertResponseData) bool {
 	case utils.EqualsTo:
 		return data.Value == pipelineData.CoinCurrentPrice
 	case utils.LessThan:
-		return data.Value < pipelineData.CoinCurrentPrice
-	case utils.LessThanEqualTo:
-		return data.Value <= pipelineData.CoinCurrentPrice
-	case utils.GreaterThan:
 		return data.Value > pipelineData.CoinCurrentPrice
-	case utils.GreaterThanEqualTo:
+	case utils.LessThanEqualTo:
 		return data.Value >= pipelineData.CoinCurrentPrice
+	case utils.GreaterThan:
+		return data.Value < pipelineData.CoinCurrentPrice
+	case utils.GreaterThanEqualTo:
+		return data.Value <= pipelineData.CoinCurrentPrice
 	default:
 		return false
 	}

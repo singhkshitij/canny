@@ -304,7 +304,7 @@ var doc = `{
         "alphavantage.DailyCurrencyDataResponse": {
             "type": "object",
             "properties": {
-                "Meta Alerts": {
+                "Meta Data": {
                     "$ref": "#/definitions/alphavantage.MetaDataResponse"
                 },
                 "Time Series (Digital Currency Daily)": {

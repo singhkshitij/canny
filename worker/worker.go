@@ -4,13 +4,14 @@ import (
 	"canny/domain"
 	"canny/pkg/alphavantage"
 	"canny/pkg/cache"
+	"canny/pkg/config"
 	"canny/pkg/http"
 	"canny/pkg/log"
 	"canny/pkg/scheduler"
 	"canny/pkg/utils"
-	"github.com/davecgh/go-spew/spew"
 	"strings"
 	"sync"
+	"time"
 )
 
 func Setup() {
@@ -61,6 +62,12 @@ func addLatestPriceToAllCoinPrices(data *alphavantage.DailyCurrencyDataResponse)
 }
 
 func EvaluateAllRules() {
+	delaySeconds := config.Cfg().Int("app.evaluation.delaySeconds")
+	delay := time.Duration(delaySeconds)
+	if delaySeconds == 0 {
+		delay = time.Duration(10)
+	}
+	time.Sleep(delay * time.Second)
 	allRules := domain.GetAllRules()
 	domain.EvaluateAllRules(allRules)
 }
