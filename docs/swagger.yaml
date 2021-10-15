@@ -278,7 +278,7 @@ paths:
   /api/v1/alerts/dry-run:
     post:
       parameters:
-      - description: Alert Alerts
+      - description: Alert Data
         in: body
         name: alert
         required: true

@@ -102,7 +102,7 @@ var doc = `{
                 "summary": "Dry run an alert",
                 "parameters": [
                     {
-                        "description": "Alert Alerts",
+                        "description": "Alert Data",
                         "name": "alert",
                         "in": "body",
                         "required": true,
