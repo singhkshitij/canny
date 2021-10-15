@@ -8,6 +8,7 @@ import (
 	"canny/pkg/log"
 	"canny/pkg/scheduler"
 	"canny/pkg/utils"
+	"github.com/davecgh/go-spew/spew"
 	"strings"
 	"sync"
 )
@@ -47,7 +48,6 @@ func RefreshCache() {
 func addLatestPriceToAllCoinPrices(data *alphavantage.DailyCurrencyDataResponse) alphavantage.LatestPrice {
 
 	latestData := data.TimeSeriesDigitalCurrencyDaily[strings.Split(data.MetaData.LastRefreshed, " ")[0]]
-
 	return alphavantage.LatestPrice{
 		OpenINR:  latestData.OpenINR,
 		OpenUSD:  latestData.OpenUSD,
@@ -60,6 +60,14 @@ func addLatestPriceToAllCoinPrices(data *alphavantage.DailyCurrencyDataResponse)
 	}
 }
 
+func EvaluateAllRules() {
+	allRules := domain.GetAllRules()
+	domain.EvaluateAllRules(allRules)
+}
+
 func InitialiseData() {
-	scheduler.Add(5, RefreshCache)
+	scheduler.Add(5, RefreshCache, "price")
+	log.Logger.Info("Price cache refresh job added !")
+	scheduler.Add(5, EvaluateAllRules, "rules")
+	log.Logger.Info("Rule evaluation job added !")
 }

@@ -51,7 +51,7 @@
                 "summary": "Create an alert for user",
                 "parameters": [
                     {
-                        "description": "Alert Data",
+                        "description": "Alert Alerts",
                         "name": "alert",
                         "in": "body",
                         "required": true,
@@ -87,7 +87,7 @@
                 "summary": "Dry run an alert",
                 "parameters": [
                     {
-                        "description": "Alert Data",
+                        "description": "Alert Alerts",
                         "name": "alert",
                         "in": "body",
                         "required": true,
@@ -289,7 +289,7 @@
         "alphavantage.DailyCurrencyDataResponse": {
             "type": "object",
             "properties": {
-                "Meta Data": {
+                "Meta Alerts": {
                     "$ref": "#/definitions/alphavantage.MetaDataResponse"
                 },
                 "Time Series (Digital Currency Daily)": {
@@ -416,8 +416,7 @@
                 "currency",
                 "name",
                 "operator",
-                "property",
-                "symbol"
+                "property"
             ],
             "properties": {
                 "currency": {
@@ -433,9 +432,6 @@
                     "type": "integer"
                 },
                 "property": {
-                    "type": "string"
-                },
-                "symbol": {
                     "type": "string"
                 },
                 "value": {
@@ -481,11 +477,8 @@
                 "property": {
                     "type": "string"
                 },
-                "symbol": {
-                    "type": "string"
-                },
                 "value": {
-                    "type": "integer"
+                    "type": "number"
                 }
             }
         },

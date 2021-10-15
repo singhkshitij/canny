@@ -66,7 +66,7 @@ var doc = `{
                 "summary": "Create an alert for user",
                 "parameters": [
                     {
-                        "description": "Alert Data",
+                        "description": "Alert Alerts",
                         "name": "alert",
                         "in": "body",
                         "required": true,
@@ -102,7 +102,7 @@ var doc = `{
                 "summary": "Dry run an alert",
                 "parameters": [
                     {
-                        "description": "Alert Data",
+                        "description": "Alert Alerts",
                         "name": "alert",
                         "in": "body",
                         "required": true,
@@ -304,7 +304,7 @@ var doc = `{
         "alphavantage.DailyCurrencyDataResponse": {
             "type": "object",
             "properties": {
-                "Meta Data": {
+                "Meta Alerts": {
                     "$ref": "#/definitions/alphavantage.MetaDataResponse"
                 },
                 "Time Series (Digital Currency Daily)": {
@@ -431,8 +431,7 @@ var doc = `{
                 "currency",
                 "name",
                 "operator",
-                "property",
-                "symbol"
+                "property"
             ],
             "properties": {
                 "currency": {
@@ -448,9 +447,6 @@ var doc = `{
                     "type": "integer"
                 },
                 "property": {
-                    "type": "string"
-                },
-                "symbol": {
                     "type": "string"
                 },
                 "value": {
@@ -496,11 +492,8 @@ var doc = `{
                 "property": {
                     "type": "string"
                 },
-                "symbol": {
-                    "type": "string"
-                },
                 "value": {
-                    "type": "integer"
+                    "type": "number"
                 }
             }
         },
