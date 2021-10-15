@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go v0.97.0 // indirect
 	cloud.google.com/go/firestore v1.6.0
 	firebase.google.com/go v3.13.0+incompatible
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-co-op/gocron v1.7.1
 	github.com/go-playground/validator/v10 v10.9.0

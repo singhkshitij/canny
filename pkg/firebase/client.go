@@ -1,7 +1,9 @@
 package firebase
 
 import (
+	err2 "canny/pkg/err"
 	"canny/pkg/log"
+	"canny/pkg/utils"
 	"cloud.google.com/go/firestore"
 	"context"
 	firebase "firebase.google.com/go"
@@ -48,7 +50,7 @@ func GetAll(collection string) []map[string]interface{} {
 			break
 		}
 		if err != nil {
-			log.Logger.Fatal("Failed getting bulk data from firebase : %v", err)
+			log.Logger.Fatal("Failed getting alerts from firebase : %v", err)
 		}
 		data := doc.Data()
 		data["createdAt"] = doc.CreateTime
@@ -58,24 +60,37 @@ func GetAll(collection string) []map[string]interface{} {
 	return items
 }
 
-func Get(collection string, id string) map[string]interface{} {
+func Get(collection string, id string) (map[string]interface{}, error, int) {
 	var data map[string]interface{}
 	item, err := client.Collection(collection).Doc(id).Get(ctx)
-	if err != nil {
-		log.Logger.Fatal("Failed getting data from firebase : %v", err)
+	if err != nil && utils.Is404Error(err.Error()) {
+		return nil, nil, err2.NotFound
+	} else if err != nil {
+		log.Logger.Fatal("Failed getting alert from firebase : %v", err)
+		return nil, err, err2.Error
 	} else {
 		data = item.Data()
 		data["createdAt"] = item.CreateTime
 		data["id"] = id
 	}
-	return data
+	return data, err, err2.Success
 }
 
 func Add(collection string, data interface{}) map[string]interface{} {
 	documentRef, _, err := client.Collection(collection).Add(ctx, data)
 	if err != nil {
-		log.Logger.Fatal("Failed adding data to firebase : %v", err)
+		log.Logger.Fatal("Failed adding alert to firebase : %v", err)
 	}
-	savedData := Get(collection, documentRef.ID)
+	savedData, _, _ := Get(collection, documentRef.ID)
 	return savedData
+}
+
+func Delete(collection string, id string) (error, int) {
+	_, err := client.Collection(collection).Doc(id).Delete(ctx)
+	if err != nil {
+		log.Logger.Fatal("Failed deleting alert from firebase : %v", err)
+		_, _, errCode := Get(collection, id)
+		return err, errCode
+	}
+	return nil, 0
 }
