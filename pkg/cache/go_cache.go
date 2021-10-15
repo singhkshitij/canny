@@ -2,18 +2,18 @@ package cache
 
 import (
 	"canny/pkg/log"
-	"github.com/patrickmn/go-cache"
+	cac "github.com/patrickmn/go-cache"
 	"time"
 )
 
-var client *cache.Cache
+var client *cac.Cache
 
 func Setup() {
-	client = cache.New(48*time.Hour, 24*time.Hour)
+	client = cac.New(48*time.Hour, 24*time.Hour)
 }
 
 func Set(keyName string, value interface{}) {
-	client.Set(keyName, value, cache.DefaultExpiration)
+	client.Set(keyName, value, cac.DefaultExpiration)
 }
 
 func Get(key string) interface{} {

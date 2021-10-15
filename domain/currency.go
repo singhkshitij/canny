@@ -1,8 +1,10 @@
 package domain
 
 import (
+	"canny/pkg/alphavantage"
 	"canny/pkg/cache"
 	"canny/pkg/config"
+	"canny/pkg/err"
 	"canny/pkg/utils"
 )
 
@@ -14,8 +16,12 @@ func GetCoinCurrencyData(coinName string) interface{} {
 	return cache.Get(coinName)
 }
 
-func GetAllCurrencyData() interface{} {
-	return cache.Get(utils.AllCoinPriceKey)
+func GetAllCurrencyData() (map[string]alphavantage.LatestPrice, int) {
+	result := cache.Get(utils.AllCoinPriceKey)
+	if result != nil {
+		return result.(map[string]alphavantage.LatestPrice), 0
+	}
+	return map[string]alphavantage.LatestPrice{}, err.NotFound
 }
 
 func GetEligibleExchangeCurrency() string {

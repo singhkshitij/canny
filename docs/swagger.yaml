@@ -3,28 +3,71 @@ definitions:
   alphavantage.DailyCurrencyDataResponse:
     properties:
       Meta Data:
-        $ref: '#/definitions/alphavantage.MetaData'
+        $ref: '#/definitions/alphavantage.MetaDataResponse'
       Time Series (Digital Currency Daily):
         additionalProperties:
           $ref: '#/definitions/alphavantage.PriceDataResponse'
         type: object
     type: object
-  alphavantage.MetaData:
+  alphavantage.LatestPrice:
     properties:
+      closeINR:
+        type: string
+      closeUSD:
+        type: string
+      highINR:
+        type: string
+      highUSD:
+        type: string
+      lowINR:
+        type: string
+      lowUSD:
+        type: string
+      openINR:
+        type: string
+      openUSD:
+        type: string
+    type: object
+  alphavantage.MetaDataResponse:
+    properties:
+      1. Information:
+        type: string
       2. Digital Currency Code:
         type: string
       3. Digital Currency Name:
+        type: string
+      4. Market Code:
+        type: string
+      5. Market Name:
         type: string
       6. Last Refreshed:
         type: string
       7. Time Zone:
         type: string
+      8. Latest Price:
+        $ref: '#/definitions/alphavantage.LatestPrice'
     type: object
   alphavantage.PriceDataResponse:
     properties:
+      1a. open (INR):
+        type: string
+      1b. open (USD):
+        type: string
+      2a. high (INR):
+        type: string
+      2b. high (USD):
+        type: string
+      3a. low (INR):
+        type: string
+      3b. low (USD):
+        type: string
       4a. close (INR):
         type: string
       4b. close (USD):
+        type: string
+      5. volume:
+        type: string
+      6. market cap (USD):
         type: string
     type: object
   model.AllCurrencyPriceResponse:
@@ -33,16 +76,9 @@ definitions:
         type: integer
       data:
         additionalProperties:
-          $ref: '#/definitions/model.ClosingPrice'
+          $ref: '#/definitions/alphavantage.LatestPrice'
         type: object
       msg:
-        type: string
-    type: object
-  model.ClosingPrice:
-    properties:
-      inr:
-        type: string
-      usd:
         type: string
     type: object
   model.CreateAlertRequest:
@@ -60,7 +96,7 @@ definitions:
       symbol:
         type: string
       value:
-        type: integer
+        type: number
     required:
     - currency
     - name
@@ -117,6 +153,20 @@ definitions:
         $ref: '#/definitions/alphavantage.DailyCurrencyDataResponse'
       msg:
         type: string
+    type: object
+  model.DryRunAlertResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/model.DryRunAlertStatus'
+      msg:
+        type: string
+    type: object
+  model.DryRunAlertStatus:
+    properties:
+      passed:
+        type: boolean
     type: object
   model.GetAllAlertResponse:
     properties:
@@ -230,6 +280,29 @@ paths:
       summary: Get alert details
       tags:
       - alerts
+  /api/v1/alerts/dry-run:
+    post:
+      parameters:
+      - description: Alert Data
+        in: body
+        name: alert
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateAlertRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.DryRunAlertResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Dry run an alert
+      tags:
+      - test
   /api/v1/currencies:
     get:
       produces:

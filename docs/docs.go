@@ -91,6 +91,42 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/alerts/dry-run": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test"
+                ],
+                "summary": "Dry run an alert",
+                "parameters": [
+                    {
+                        "description": "Alert Data",
+                        "name": "alert",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateAlertRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.DryRunAlertResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/alerts/{id}": {
             "get": {
                 "produces": [
@@ -269,7 +305,7 @@ var doc = `{
             "type": "object",
             "properties": {
                 "Meta Data": {
-                    "$ref": "#/definitions/alphavantage.MetaData"
+                    "$ref": "#/definitions/alphavantage.MetaDataResponse"
                 },
                 "Time Series (Digital Currency Daily)": {
                     "type": "object",
@@ -279,13 +315,51 @@ var doc = `{
                 }
             }
         },
-        "alphavantage.MetaData": {
+        "alphavantage.LatestPrice": {
             "type": "object",
             "properties": {
+                "closeINR": {
+                    "type": "string"
+                },
+                "closeUSD": {
+                    "type": "string"
+                },
+                "highINR": {
+                    "type": "string"
+                },
+                "highUSD": {
+                    "type": "string"
+                },
+                "lowINR": {
+                    "type": "string"
+                },
+                "lowUSD": {
+                    "type": "string"
+                },
+                "openINR": {
+                    "type": "string"
+                },
+                "openUSD": {
+                    "type": "string"
+                }
+            }
+        },
+        "alphavantage.MetaDataResponse": {
+            "type": "object",
+            "properties": {
+                "1. Information": {
+                    "type": "string"
+                },
                 "2. Digital Currency Code": {
                     "type": "string"
                 },
                 "3. Digital Currency Name": {
+                    "type": "string"
+                },
+                "4. Market Code": {
+                    "type": "string"
+                },
+                "5. Market Name": {
                     "type": "string"
                 },
                 "6. Last Refreshed": {
@@ -293,16 +367,43 @@ var doc = `{
                 },
                 "7. Time Zone": {
                     "type": "string"
+                },
+                "8. Latest Price": {
+                    "$ref": "#/definitions/alphavantage.LatestPrice"
                 }
             }
         },
         "alphavantage.PriceDataResponse": {
             "type": "object",
             "properties": {
+                "1a. open (INR)": {
+                    "type": "string"
+                },
+                "1b. open (USD)": {
+                    "type": "string"
+                },
+                "2a. high (INR)": {
+                    "type": "string"
+                },
+                "2b. high (USD)": {
+                    "type": "string"
+                },
+                "3a. low (INR)": {
+                    "type": "string"
+                },
+                "3b. low (USD)": {
+                    "type": "string"
+                },
                 "4a. close (INR)": {
                     "type": "string"
                 },
                 "4b. close (USD)": {
+                    "type": "string"
+                },
+                "5. volume": {
+                    "type": "string"
+                },
+                "6. market cap (USD)": {
                     "type": "string"
                 }
             }
@@ -316,21 +417,10 @@ var doc = `{
                 "data": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/model.ClosingPrice"
+                        "$ref": "#/definitions/alphavantage.LatestPrice"
                     }
                 },
                 "msg": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.ClosingPrice": {
-            "type": "object",
-            "properties": {
-                "inr": {
-                    "type": "string"
-                },
-                "usd": {
                     "type": "string"
                 }
             }
@@ -364,7 +454,7 @@ var doc = `{
                     "type": "string"
                 },
                 "value": {
-                    "type": "integer"
+                    "type": "number"
                 }
             }
         },
@@ -442,6 +532,28 @@ var doc = `{
                 },
                 "msg": {
                     "type": "string"
+                }
+            }
+        },
+        "model.DryRunAlertResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/model.DryRunAlertStatus"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.DryRunAlertStatus": {
+            "type": "object",
+            "properties": {
+                "passed": {
+                    "type": "boolean"
                 }
             }
         },
